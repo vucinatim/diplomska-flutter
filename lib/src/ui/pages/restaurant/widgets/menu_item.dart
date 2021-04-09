@@ -49,7 +49,7 @@ class _ExpandableMenuItemState extends State<ExpandableMenuItem> {
             '${f.format(widget.item!.price).toString()} \€',
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).primaryColor,
             ),
           )
         ],

@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -8,7 +7,7 @@ import 'package:web_menu_flutter/src/blocs/restaurant_bloc/restaurant_bloc.dart'
 
 import 'package:web_menu_flutter/src/models/models.dart';
 import 'package:web_menu_flutter/src/ui/utils/ui_helpers.dart';
-import 'package:web_menu_flutter/src/ui/widgets/custom_icon_button.dart';
+import 'package:web_menu_flutter/src/ui/widgets/custom_app_bar.dart';
 import 'package:web_menu_flutter/src/ui/widgets/options_menu.dart';
 
 class RestaurantInfoPage extends StatelessWidget {
@@ -225,12 +224,27 @@ class RestaurantInfoPage extends StatelessWidget {
             slivers: <Widget>[
               SliverPersistentHeader(
                 pinned: true,
-                delegate: RestaurantInfoAppBar(
+                delegate: CustomAppBar(
                   minExtent:
                       MediaQuery.of(context).padding.top + kToolbarHeight,
                   maxExtent:
                       MediaQuery.of(context).padding.top + kToolbarHeight,
-                  restaurant: restaurant,
+                  title: restaurant?.name,
+                  trailing: OptionsMenu(
+                    buttonBackgroundColor: Colors.black.withOpacity(0.1),
+                    options: <MenuOption>[
+                      MenuOption(
+                        child: const Text('Call restaurant'),
+                        onPressed: () {
+                          print('Calling restaurant');
+                        },
+                      ),
+                      MenuOption(
+                        child: const Text('Visit web page'),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
                 ),
               ),
               restaurant != null
@@ -266,96 +280,4 @@ class RestaurantInfoPage extends StatelessWidget {
       ),
     );
   }
-}
-
-class RestaurantInfoAppBar extends SliverPersistentHeaderDelegate {
-  RestaurantInfoAppBar({
-    required this.minExtent,
-    required this.maxExtent,
-    this.restaurant,
-  });
-  @override
-  final double minExtent;
-  @override
-  final double maxExtent;
-
-  final Restaurant? restaurant;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final double t = Curves.easeInOut.transform(shrinkRatio(shrinkOffset));
-    final Offset tittleOffset = Offset(0, lerpDouble(0, 8, t)!);
-
-    return Stack(
-      fit: StackFit.expand,
-      children: <Widget>[
-        AppBar(
-          automaticallyImplyLeading: false,
-          elevation: minToZeroShrinkRatio(shrinkOffset) * 4,
-          backgroundColor: Colors.white,
-          leadingWidth: 40,
-          titleSpacing: 0,
-          title: Row(
-            children: <Widget>[
-              horizontalAppPaddingSpace,
-              CustomIconButton(
-                icon: const Icon(Icons.arrow_back_rounded),
-                backgroundColor: Colors.black.withOpacity(0.1),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              Transform.translate(
-                offset: tittleOffset,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Opacity(
-                    opacity: minToZeroShrinkRatio(shrinkOffset),
-                    child: Text(
-                      restaurant?.name ?? '',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            OptionsMenu(
-              buttonBackgroundColor: Colors.black.withOpacity(0.1),
-              options: <MenuOption>[
-                MenuOption(
-                  child: const Text('Call restaurant'),
-                  onPressed: () {
-                    print('Calling restaurant');
-                  },
-                ),
-                MenuOption(
-                  child: const Text('Visit web page'),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-            horizontalAppPaddingSpace,
-          ],
-        ),
-      ],
-    );
-  }
-
-  double shrinkRatio(double shrinkOffset) {
-    return 1.0 - max(0.0, shrinkOffset) / maxExtent;
-  }
-
-  double minToZeroShrinkRatio(double shrinkOffset) {
-    return 1.0 - min(1.0, max(0.0, maxExtent - shrinkOffset) / minExtent);
-  }
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
 }

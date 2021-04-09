@@ -15,8 +15,7 @@ class OptionsMenu extends StatefulWidget {
     required this.options,
     this.backgroundColor = Colors.white,
     this.buttonBackgroundColor = Colors.white,
-  })  : assert(options != null),
-        super(key: key);
+  }) : super(key: key);
   @override
   _OptionsMenuState createState() => _OptionsMenuState();
 }
@@ -64,7 +63,8 @@ class _OptionsMenuState extends State<OptionsMenu>
   }
 
   void findButton() {
-    final RenderBox renderBox = _key!.currentContext!.findRenderObject() as RenderBox;
+    final RenderBox renderBox =
+        _key!.currentContext!.findRenderObject() as RenderBox;
     buttonSize = renderBox.size;
     buttonPosition = renderBox.localToGlobal(Offset.zero);
   }

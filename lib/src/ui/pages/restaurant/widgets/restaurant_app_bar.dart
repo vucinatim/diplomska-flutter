@@ -78,6 +78,7 @@ class RestaurantAppBar extends SliverPersistentHeaderDelegate {
           automaticallyImplyLeading: false,
           elevation: minToZeroShrinkRatio(shrinkOffset) * 4,
           backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
           leadingWidth: 40,
           titleSpacing: 0,
           bottom: tabBar,

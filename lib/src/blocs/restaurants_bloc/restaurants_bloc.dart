@@ -9,8 +9,7 @@ part 'restaurants_state.dart';
 
 class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
   RestaurantsBloc({required RestaurantRepository restaurantRepository})
-      : assert(restaurantRepository != null),
-        _restaurantRepository = restaurantRepository,
+      : _restaurantRepository = restaurantRepository,
         super(const RestaurantsNotLoaded());
 
   final RestaurantRepository _restaurantRepository;

@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_menu_flutter/src/blocs/profile_bloc/profile_bloc.dart';
 import 'package:web_menu_flutter/src/blocs/restaurants_bloc/restaurants_bloc.dart';
+import 'package:web_menu_flutter/src/repositories/profile_repository.dart';
 import 'package:web_menu_flutter/src/repositories/repositories.dart';
 import 'package:web_menu_flutter/src/repositories/restaurant_repository.dart';
 
@@ -13,12 +16,12 @@ class App extends StatelessWidget {
   const App({
     Key? key,
     required this.authenticationRepository,
+    required this.profileRepository,
     required this.restaurantRepository,
-  })   : assert(authenticationRepository != null),
-        assert(restaurantRepository != null),
-        super(key: key);
+  }) : super(key: key);
 
   final AuthenticationRepository authenticationRepository;
+  final ProfileRepository profileRepository;
   final RestaurantRepository restaurantRepository;
 
   @override
@@ -41,6 +44,13 @@ class App extends StatelessWidget {
               return RestaurantsBloc(
                 restaurantRepository: restaurantRepository,
               )..add(LoadRestaurants());
+            },
+          ),
+          BlocProvider<ProfileBloc>(
+            create: (_) {
+              return ProfileBloc(
+                profileRepository: profileRepository,
+              );
             },
           ),
           BlocProvider<RestaurantBloc>(
@@ -73,6 +83,7 @@ class _AppViewState extends State<AppView> {
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (BuildContext context, ThemeState themeState) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Cico Admin Panel',
           theme: themeState.themeData,
 

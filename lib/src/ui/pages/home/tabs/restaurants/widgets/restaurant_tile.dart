@@ -4,8 +4,8 @@ import 'package:web_menu_flutter/src/models/models.dart';
 import 'package:web_menu_flutter/src/ui/utils/ui_helpers.dart';
 import 'package:web_menu_flutter/src/app/extensions/hover_extensions.dart';
 
-class RestaurantCard extends StatelessWidget {
-  const RestaurantCard({Key? key, this.restaurant}) : super(key: key);
+class RestaurantTile extends StatelessWidget {
+  const RestaurantTile({Key? key, this.restaurant}) : super(key: key);
 
   final Restaurant? restaurant;
 

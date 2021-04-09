@@ -1,16 +1,16 @@
 import 'models.dart';
 
-class User {
+class Manager {
   final String? id;
   final String? fullName;
   final String? companyName;
   final String? email;
   final List<Restaurant>? restaurants;
 
-  User(
+  Manager(
       {this.id, this.fullName, this.companyName, this.email, this.restaurants});
 
-  User.fromJson(Map<String, dynamic> data)
+  Manager.fromJson(Map<String, dynamic> data)
       : id = data['id'],
         fullName = data['fullName'],
         companyName = data['companyName'],

@@ -6,6 +6,6 @@ extension StringExtension on String {
   }
 
   String enumToString() {
-    return this.split('.').last.toLowerCase().capitalize();
+    return split('.').last.toLowerCase().capitalize();
   }
 }

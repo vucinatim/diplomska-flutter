@@ -16,11 +16,7 @@ class CustomTabIndicator extends Decoration {
     this.tabBarIndicatorSize = TabBarIndicatorSize.label,
     this.padding = const EdgeInsets.fromLTRB(4, 0, 4, 0),
     this.insets = const EdgeInsets.symmetric(horizontal: 8.0),
-  })  : assert(indicatorHeight != null),
-        assert(indicatorColor != null),
-        assert(indicatorRadius != null),
-        assert(padding != null),
-        assert(insets != null);
+  });
 
   @override
   Decoration? lerpFrom(Decoration? a, double t) {
@@ -51,9 +47,7 @@ class CustomTabIndicator extends Decoration {
 }
 
 class _BubblePainter extends BoxPainter {
-  _BubblePainter(this.decoration, VoidCallback? onChanged)
-      : assert(decoration != null),
-        super(onChanged);
+  _BubblePainter(this.decoration, VoidCallback? onChanged) : super(onChanged);
 
   final CustomTabIndicator decoration;
 
@@ -65,9 +59,6 @@ class _BubblePainter extends BoxPainter {
   TabBarIndicatorSize get tabBarIndicatorSize => decoration.tabBarIndicatorSize;
 
   Rect _indicatorRectFor(Rect rect, TextDirection textDirection) {
-    assert(rect != null);
-    assert(textDirection != null);
-
     Rect indicator = padding.resolve(textDirection).inflateRect(rect);
 
     if (tabBarIndicatorSize == TabBarIndicatorSize.tab) {
@@ -84,7 +75,6 @@ class _BubblePainter extends BoxPainter {
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    assert(configuration != null);
     assert(configuration.size != null);
     final Rect rect = Offset(
             offset.dx, (configuration.size!.height / 2) - indicatorHeight / 2) &

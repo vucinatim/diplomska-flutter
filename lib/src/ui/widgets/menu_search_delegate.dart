@@ -10,9 +10,28 @@ class MenuSearchDelegate<T> extends SearchDelegate<T?> {
   final bool Function(T, String)? filter;
 
   @override
+  ThemeData appBarTheme(BuildContext context) {
+    return Theme.of(context).copyWith(
+      appBarTheme: Theme.of(context).appBarTheme.copyWith(
+            backgroundColor: Colors.white,
+          ),
+      inputDecorationTheme: Theme.of(context).inputDecorationTheme.copyWith(
+            border: InputBorder.none,
+          ),
+      textTheme: Theme.of(context).textTheme.copyWith(
+            headline6: const TextStyle(
+              color: Colors.black,
+              fontSize: 18.0,
+            ),
+          ),
+    );
+  }
+
+  @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
       IconButton(
+        color: Colors.black87,
         padding: const EdgeInsets.only(right: 9),
         icon: AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),

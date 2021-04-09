@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:web_menu_flutter/src/app.dart';
+import 'package:web_menu_flutter/src/repositories/profile_repository.dart';
 import 'package:web_menu_flutter/src/repositories/repositories.dart';
 
 void main() {
@@ -16,6 +17,7 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget(App(
       authenticationRepository: AuthenticationRepository(),
+      profileRepository: ProfileRepository(),
       restaurantRepository: RestaurantRepository(),
     ));
 

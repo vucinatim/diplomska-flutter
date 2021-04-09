@@ -19,9 +19,10 @@ class AppRouter {
   static const String SignUpRoute = '/signup';
   static const String ForgotPasswordRoute = '/password/forgot';
   static const String ResetPasswordRoute = '/password/reset';
-  static const String ProfileSettings = 'settings';
+  static const String ProfileSettings = 'profile';
 
   static const String HomeRoute = '/home';
+  static const String ScannerRoute = '/scanner';
   static const String RestaurantsRoute = '/restaurants';
 
   static const String RestaurantRoute = '/restaurant';
@@ -34,15 +35,19 @@ class AppRouter {
     final RoutingData routingData = getRoutingData(settings.name!);
     switch (routingData.route) {
       case SplashRoute:
-        return EnterExitRoute(page: SplashPage(), routeName: settings.name);
+        return SimpleRoute(page: SplashPage(), routeName: settings.name);
       case LoginRoute:
-        return EnterExitRoute(page: LoginPage(), routeName: settings.name);
+        return SimpleRoute(page: LoginPage(), routeName: settings.name);
+      case SignUpRoute:
+        return SimpleRoute(page: SignUpPage(), routeName: settings.name);
       case HomeRoute:
-        return EnterExitRoute(page: HomePage(), routeName: settings.name);
+        return SimpleRoute(page: HomePage(), routeName: settings.name);
+      case ScannerRoute:
+        return SimpleRoute(page: ScannerPage(), routeName: settings.name);
       case RestaurantRoute:
         final RestaurantArguments args =
             settings.arguments as RestaurantArguments;
-        return EnterExitRoute(
+        return SimpleRoute(
             page: RestaurantMenuPage(restaurantId: args.restaurantId),
             routeName: settings.name);
       case RestaurantInfoRoute:
@@ -51,7 +56,7 @@ class AppRouter {
           routeName: settings.name,
         );
       default:
-        return EnterExitRoute(page: UnknownPage(), routeName: settings.name);
+        return SimpleRoute(page: UnknownPage(), routeName: settings.name);
     }
   }
 
@@ -63,6 +68,18 @@ class AppRouter {
       route: uriData.path,
     );
   }
+}
+
+class SimpleRoute extends MaterialPageRoute {
+  SimpleRoute({
+    required final Widget page,
+    required final String? routeName,
+  }) : super(
+          settings: RouteSettings(name: routeName),
+          builder: (BuildContext context) {
+            return page;
+          },
+        );
 }
 
 class OpenRoute extends PageRouteBuilder {

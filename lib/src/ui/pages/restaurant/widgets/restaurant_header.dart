@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:web_menu_flutter/src/app/routing/router.dart';
 import 'package:web_menu_flutter/src/models/models.dart';
-import 'package:web_menu_flutter/src/ui/pages/pages.dart';
 import 'package:web_menu_flutter/src/ui/utils/ui_helpers.dart';
+import 'package:web_menu_flutter/src/ui/widgets/custom_button.dart';
 
 class RestaurantHeader extends StatelessWidget {
   const RestaurantHeader({
@@ -34,30 +34,12 @@ class RestaurantHeader extends StatelessWidget {
               const Expanded(
                 child: Text('Open • Closes at 22:00'),
               ),
-              TextButton(
-                style: ButtonStyle(
-                  minimumSize: MaterialStateProperty.all(Size.zero),
-                  padding: MaterialStateProperty.all(
-                    const EdgeInsets.fromLTRB(8, 5, 8, 5),
-                  ),
-                  backgroundColor: MaterialStateProperty.all(
-                    Theme.of(context).primaryColor.withOpacity(0.1),
-                  ),
-                  overlayColor: MaterialStateProperty.all(Colors.white24),
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                ),
+              CustomButton(
+                text: 'More info',
                 onPressed: () {
                   Navigator.of(context)
                       .pushNamed(AppRouter.RestaurantInfoRoute);
                 },
-                child: Text(
-                  'More info',
-                  style: TextStyle(color: Theme.of(context).primaryColor),
-                ),
               ),
             ],
           ),

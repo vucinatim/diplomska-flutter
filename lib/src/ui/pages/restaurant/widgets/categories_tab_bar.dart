@@ -57,7 +57,7 @@ class CategoriesTabBar extends StatelessWidget implements PreferredSizeWidget {
                 unselectedLabelColor: Colors.grey.shade700,
                 indicator: CustomTabIndicator(
                   indicatorHeight: 25.0,
-                  indicatorColor: Colors.blue[100]!.withOpacity(0.3),
+                  indicatorColor: Theme.of(context).highlightColor,
                   tabBarIndicatorSize: TabBarIndicatorSize.tab,
                 ),
                 indicatorSize: TabBarIndicatorSize.tab,

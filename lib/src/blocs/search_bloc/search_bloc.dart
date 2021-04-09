@@ -7,9 +7,7 @@ part 'search_state.dart';
 
 class SearchBloc<T> extends Bloc<SearchEvent, SearchState> {
   SearchBloc({required this.items, required this.filter})
-      : assert(items != null),
-        assert(filter != null),
-        super(WaitingForInput());
+      : super(WaitingForInput());
 
   final List<T> items;
   final bool Function(T, String) filter;
