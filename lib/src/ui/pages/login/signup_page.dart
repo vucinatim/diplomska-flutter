@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:web_menu_flutter/src/app/routing/router.dart';
-import 'package:web_menu_flutter/src/ui/pages/login/widgets/already_have_an_account_check.dart';
-import 'package:web_menu_flutter/src/ui/pages/login/widgets/or_divider.dart';
-import 'package:web_menu_flutter/src/ui/pages/login/widgets/rounded_button.dart';
-import 'package:web_menu_flutter/src/ui/pages/login/widgets/rounded_input_field.dart';
-import 'package:web_menu_flutter/src/ui/pages/login/widgets/rounded_password_field.dart';
-import 'package:web_menu_flutter/src/ui/pages/login/widgets/social_icon_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_menu_flutter/src/blocs/sign_up_cubit/sign_up_cubit.dart';
+import 'package:web_menu_flutter/src/repositories/authentication_repository.dart';
+
+import 'forms/sign_up_form.dart';
 
 class SignUpPage extends StatelessWidget {
   @override
@@ -52,63 +48,10 @@ class SignUpPage extends StatelessWidget {
                   },
                 ),
               ),
-              SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const Text(
-                      'SIGNUP',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: size.height * 0.02),
-                    SvgPicture.asset(
-                      'assets/icons/signup.svg',
-                      height: size.height * 0.30,
-                    ),
-                    SizedBox(height: size.height * 0.01),
-                    RoundedInputField(
-                      hintText: 'Your Email',
-                      onChanged: (String value) {},
-                    ),
-                    RoundedPasswordField(
-                      onChanged: (String value) {},
-                    ),
-                    Hero(
-                      tag: 'signUpButton',
-                      child: RoundedButton(
-                        text: 'SIGNUP',
-                        color: Theme.of(context).primaryColor,
-                        onPressed: () {},
-                      ),
-                    ),
-                    SizedBox(height: size.height * 0.03),
-                    AlreadyHaveAnAccountCheck(
-                      login: false,
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed(AppRouter.LoginRoute);
-                      },
-                    ),
-                    OrDivider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        SocialIconButton(
-                          icon: FontAwesomeIcons.facebookF,
-                          onPressed: () {},
-                        ),
-                        SocialIconButton(
-                          icon: FontAwesomeIcons.twitter,
-                          onPressed: () {},
-                        ),
-                        SocialIconButton(
-                          icon: FontAwesomeIcons.google,
-                          onPressed: () {},
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+              BlocProvider<SignUpCubit>(
+                create: (_) =>
+                    SignUpCubit(context.read<AuthenticationRepository>()),
+                child: SignUpForm(),
               ),
             ],
           ),

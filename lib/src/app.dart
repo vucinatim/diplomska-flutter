@@ -9,6 +9,7 @@ import 'package:web_menu_flutter/src/repositories/repositories.dart';
 import 'package:web_menu_flutter/src/repositories/restaurant_repository.dart';
 
 import 'app/routing/router.dart';
+import 'blocs/authentication_bloc/authentication_bloc.dart';
 import 'blocs/restaurant_bloc/restaurant_bloc.dart';
 import 'blocs/theme_bloc/theme_bloc.dart';
 
@@ -34,11 +35,11 @@ class App extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: <BlocProvider<dynamic>>[
-          // BlocProvider<AuthenticationBloc>(
-          //   create: (_) => AuthenticationBloc(
-          //     authenticationRepository: authenticationRepository,
-          //   ),
-          // ),
+          BlocProvider<AuthenticationBloc>(
+            create: (_) => AuthenticationBloc(
+              authenticationRepository: authenticationRepository,
+            ),
+          ),
           BlocProvider<RestaurantsBloc>(
             create: (_) {
               return RestaurantsBloc(

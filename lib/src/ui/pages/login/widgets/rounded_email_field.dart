@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 
-class RoundedPasswordField extends StatefulWidget {
-  const RoundedPasswordField({
+class RoundedEmailField extends StatelessWidget {
+  const RoundedEmailField({
     this.hintText,
+    this.icon = Icons.person,
     this.onChanged,
     this.errorMessage,
   });
 
   final String? hintText;
+  final IconData icon;
   final ValueChanged<String>? onChanged;
   final String? errorMessage;
-
-  @override
-  State<StatefulWidget> createState() => _RoundedPasswordFieldState();
-}
-
-class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
-  bool _isObscured = true;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +19,9 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
     return Column(
       children: <Widget>[
         Visibility(
-          visible: widget.errorMessage != null,
+          visible: errorMessage != null,
           child: Text(
-            widget.errorMessage ?? '',
+            errorMessage ?? '',
             style: TextStyle(
               color: Theme.of(context).primaryColor,
               fontSize: 12,
@@ -42,34 +37,15 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
             borderRadius: BorderRadius.circular(30),
           ),
           child: TextField(
-            obscureText: _isObscured,
-            onChanged: widget.onChanged,
+            onChanged: onChanged,
             cursorColor: Theme.of(context).primaryColor,
+            keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-              hintText: widget.hintText,
               icon: Icon(
-                Icons.lock,
+                icon,
                 color: Theme.of(context).primaryColor,
               ),
-              suffixIconConstraints: const BoxConstraints(
-                minWidth: 0,
-              ),
-              suffixIcon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _isObscured = !_isObscured;
-                  });
-                },
-                child: _isObscured
-                    ? Icon(
-                        Icons.visibility,
-                        color: Theme.of(context).primaryColor,
-                      )
-                    : Icon(
-                        Icons.visibility_off,
-                        color: Theme.of(context).primaryColor,
-                      ),
-              ),
+              hintText: hintText,
               border: InputBorder.none,
             ),
           ),

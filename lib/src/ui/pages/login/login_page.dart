@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:web_menu_flutter/src/app/routing/router.dart';
-import 'package:web_menu_flutter/src/ui/pages/login/widgets/already_have_an_account_check.dart';
-import 'package:web_menu_flutter/src/ui/pages/login/widgets/rounded_button.dart';
-import 'package:web_menu_flutter/src/ui/pages/login/widgets/rounded_input_field.dart';
-import 'package:web_menu_flutter/src/ui/pages/login/widgets/rounded_password_field.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_menu_flutter/src/blocs/login_cubit/login_cubit.dart';
+import 'package:web_menu_flutter/src/repositories/authentication_repository.dart';
+import 'forms/login_form.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -48,46 +46,10 @@ class LoginPage extends StatelessWidget {
                   },
                 ),
               ),
-              SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const Text(
-                      'LOGIN',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: size.height * 0.03),
-                    SvgPicture.asset(
-                      'assets/icons/login.svg',
-                      height: size.height * 0.35,
-                    ),
-                    SizedBox(height: size.height * 0.03),
-                    RoundedInputField(
-                      hintText: 'Your Email',
-                      onChanged: (String value) {},
-                    ),
-                    RoundedPasswordField(
-                      onChanged: (String value) {},
-                    ),
-                    Hero(
-                      tag: 'loginButton',
-                      child: RoundedButton(
-                        text: 'LOGIN',
-                        color: Theme.of(context).primaryColor,
-                        onPressed: () {
-                          print('Do the login');
-                        },
-                      ),
-                    ),
-                    SizedBox(height: size.height * 0.03),
-                    AlreadyHaveAnAccountCheck(
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed(AppRouter.SignUpRoute);
-                      },
-                    ),
-                  ],
-                ),
+              BlocProvider<LoginCubit>(
+                create: (_) =>
+                    LoginCubit(context.read<AuthenticationRepository>()),
+                child: LoginForm(),
               ),
             ],
           ),

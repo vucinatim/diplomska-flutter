@@ -5,11 +5,22 @@ import 'package:web_menu_flutter/src/models/models.dart';
 import 'package:web_menu_flutter/src/ui/pages/restaurant/restaurant_menu_page.dart';
 import 'package:web_menu_flutter/src/ui/utils/ui_helpers.dart';
 import 'package:web_menu_flutter/src/app/extensions/hover_extensions.dart';
+import 'package:web_menu_flutter/src/ui/widgets/favorite_button/favorite_button.dart';
 
 class RestaurantItem extends StatelessWidget {
   const RestaurantItem({Key? key, this.restaurant}) : super(key: key);
 
   final Restaurant? restaurant;
+
+  Future<bool> onFavoriteButtonTapped(bool isFavorite) async {
+    /// send your request here
+    // final bool success= await sendRequest();
+
+    /// if failed, you can do nothing
+    // return success? !isFavorite:isFavorite;
+
+    return !isFavorite;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,13 +90,10 @@ class RestaurantItem extends StatelessWidget {
                         ],
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.favorite_border,
-                        size: 18,
-                      ),
-                      color: Theme.of(context).primaryColor,
-                      onPressed: () {},
+                    FavoriteButton(
+                      size: 20,
+                      padding: const EdgeInsets.fromLTRB(20, 8, 8, 8),
+                      onTap: onFavoriteButtonTapped,
                     ),
                   ],
                 ),

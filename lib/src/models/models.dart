@@ -9,3 +9,4 @@ export 'menu_item_metadata.dart';
 export 'private_data.dart';
 export 'profile.dart';
 export 'restaurant.dart';
+export 'user.dart';
