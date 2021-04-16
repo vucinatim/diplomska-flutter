@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:web_menu_flutter/src/models/item_category.dart';
+import 'package:web_menu_flutter/src/models/models.dart';
 import 'package:web_menu_flutter/src/ui/pages/restaurant/widgets/restaurant_menu.dart';
 import 'package:web_menu_flutter/src/ui/widgets/custom_icon_button.dart';
 

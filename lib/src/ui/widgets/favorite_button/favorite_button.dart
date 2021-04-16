@@ -93,7 +93,7 @@ class FavoriteButtonState extends State<FavoriteButton>
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: onTap,
+      onTap: () => onTap(context),
       child: Padding(
         padding: widget.padding ?? EdgeInsets.zero,
         child: AnimatedBuilder(
@@ -154,12 +154,12 @@ class FavoriteButtonState extends State<FavoriteButton>
     );
   }
 
-  void onTap() {
+  void onTap(BuildContext context) {
     if (_controller!.isAnimating) {
       return;
     }
     if (widget.onTap != null) {
-      widget.onTap!(_isFavorite ?? true).then((bool isFavorite) {
+      widget.onTap!(context, _isFavorite ?? true).then((bool isFavorite) {
         _handleIsFavoriteChanged(isFavorite);
       });
     } else {

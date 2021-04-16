@@ -24,7 +24,7 @@ class RestaurantTile extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.cover,
                 clipBehavior: Clip.antiAlias,
-                child: Image.network(restaurant!.imageUrl!),
+                child: Image.network(restaurant!.thumbnail!),
               ),
             ),
             horizontalSpaceMedium,

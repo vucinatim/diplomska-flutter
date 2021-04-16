@@ -1,27 +1,25 @@
-import 'dart:convert';
-
 import 'models.dart';
 
 class Restaurant {
   final String? id;
   final String? name;
   final String? description;
-  final String? imageUrl;
+  final String? thumbnail;
+  final String? headerImg;
   final ContactInfo? contactInfo;
-  final List<String>? supportedLanguages;
+  final List<dynamic>? menuTemplate;
   final List<ItemCategory>? menu;
-  final MenuConfig? config;
-  final Map<String, String>? openingHours;
+  final Map<String, OpenHours>? openingHours;
 
-  Restaurant({
+  const Restaurant({
     this.id,
     this.name,
     this.description,
-    this.imageUrl,
+    this.thumbnail,
+    this.headerImg,
     this.contactInfo,
-    this.supportedLanguages,
     this.menu,
-    this.config,
+    this.menuTemplate,
     this.openingHours,
   });
 
@@ -29,42 +27,46 @@ class Restaurant {
     final String? id,
     final String? name,
     final String? description,
-    final String? imageUrl,
+    final String? thumbnail,
+    final String? headerImg,
     final ContactInfo? contactInfo,
-    final List<String>? supportedLanguages,
     final List<ItemCategory>? menu,
-    final MenuConfig? config,
-    final Map<String, String>? openingHours,
+    final List<Map<String, dynamic>>? menuTemplate,
+    final Map<String, OpenHours>? openingHours,
   }) {
     return Restaurant(
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
-      imageUrl: imageUrl ?? this.imageUrl,
+      thumbnail: thumbnail ?? this.thumbnail,
+      headerImg: headerImg ?? this.headerImg,
       contactInfo: contactInfo ?? this.contactInfo,
-      supportedLanguages: supportedLanguages ?? this.supportedLanguages,
       menu: menu ?? this.menu,
+      menuTemplate: menuTemplate ?? this.menuTemplate,
       openingHours: openingHours ?? this.openingHours,
     );
   }
 
-  Restaurant.fromJson(Map<String, dynamic> data, this.id, this.menu)
-      : name = data['name'],
-        description = data['description'],
-        imageUrl = data['imageUrl'],
-        contactInfo = ContactInfo.fromJson(data['contactInfo']),
-        supportedLanguages = data['supportedLanguages'],
-        config = MenuConfig.fromJson(data['config']),
-        openingHours = data['openingHours'];
-
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'description': description,
-      'imageUrl': imageUrl,
-      'contactInfo': contactInfo!.toJson(),
-      'openingHours': json.encode(openingHours)
-    };
+  factory Restaurant.fromJson(Map<String, dynamic>? json, String id,
+      [List<ItemCategory>? menu]) {
+    return Restaurant(
+      id: id,
+      name: json?['name'],
+      description: json?['description'],
+      thumbnail: json?['thumbnail'],
+      headerImg: json?['header_img'],
+      contactInfo: ContactInfo.fromJson(json?['contact_info']),
+      openingHours: getOpeningHours(json?['open_hours']),
+      menuTemplate: json?['menu'],
+      menu: menu,
+    );
   }
+}
+
+Map<String, OpenHours> getOpeningHours(Map<String, dynamic>? jsonHours) {
+  final Map<String, OpenHours> openingHours = <String, OpenHours>{};
+  jsonHours?.forEach((String key, dynamic value) {
+    openingHours[key] = OpenHours.fromJson(value);
+  });
+  return openingHours;
 }

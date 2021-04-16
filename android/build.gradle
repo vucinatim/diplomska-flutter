@@ -5,7 +5,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.3'
+        /// TODO(vucinatim): change build.gradle to latest version when google_maps will work with it on  release version
+        classpath 'com.android.tools.build:gradle:3.6.2'
         classpath 'com.google.gms:google-services:4.3.5'
     }
 }

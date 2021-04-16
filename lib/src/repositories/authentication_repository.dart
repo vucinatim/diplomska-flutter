@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:web_menu_flutter/src/models/models.dart';
+import 'package:web_menu_flutter/src/repositories/profile_repository.dart';
 
 /// Thrown if during the sign up process if a failure occurs.
 class SignUpFailure implements Exception {}
@@ -50,10 +51,16 @@ class AuthenticationRepository {
     required String password,
   }) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      final firebase_auth.UserCredential user =
+          await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      // If the user is new: create a new user document in users collection
+      if (user.additionalUserInfo?.isNewUser ?? false) {
+        ProfileRepository().updateProfile(Profile(user: user.user!.toUser));
+      }
     } on Exception {
       throw SignUpFailure();
     }
@@ -72,7 +79,12 @@ class AuthenticationRepository {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      await _firebaseAuth.signInWithCredential(credential);
+      final firebase_auth.UserCredential user =
+          await _firebaseAuth.signInWithCredential(credential);
+      // If the user is new: create a new user document in users collection
+      if (user.additionalUserInfo?.isNewUser ?? false) {
+        ProfileRepository().updateProfile(Profile(user: user.user!.toUser));
+      }
     } on Exception {
       throw LogInWithGoogleFailure();
     }

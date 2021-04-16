@@ -10,7 +10,7 @@ abstract class RestaurantEvent extends Equatable {
 class LoadRestaurant extends RestaurantEvent {
   const LoadRestaurant(this.id);
 
-  final String? id;
+  final String id;
 
   @override
   List<Object?> get props => <Object?>[id];

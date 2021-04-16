@@ -55,6 +55,10 @@ class CustomAppBar extends SliverPersistentHeaderDelegate {
                 ),
               ),
               Visibility(
+                visible: showBackButton,
+                child: horizontalSpaceTiny,
+              ),
+              Visibility(
                 visible: title != null,
                 child: Transform.translate(
                   offset: tittleOffset,

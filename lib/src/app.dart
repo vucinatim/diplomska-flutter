@@ -51,6 +51,7 @@ class App extends StatelessWidget {
             create: (_) {
               return ProfileBloc(
                 profileRepository: profileRepository,
+                authenticationRepository: authenticationRepository,
               );
             },
           ),

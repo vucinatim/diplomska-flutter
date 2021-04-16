@@ -26,7 +26,9 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
-          final ItemCategory category = widget.menu![index];
+          final String category = widget.menu?[index].name ?? '';
+          final List<MenuItem> items =
+              widget.menu?[index].items ?? <MenuItem>[];
           return Column(
             key: widget.tabKeys != null ? widget.tabKeys![index] : null,
             mainAxisSize: MainAxisSize.min,
@@ -37,21 +39,21 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                 padding: const EdgeInsets.fromLTRB(
                     horizontalAppPadding, 0, horizontalAppPadding, 5),
                 child: Text(
-                  category.title!['en']!.toUpperCase(),
+                  category.toUpperCase(),
                   style: const TextStyle(
                       fontSize: 17, fontWeight: FontWeight.w900),
                 ),
               ),
               verticalSpaceTiny,
               ...List<Widget>.generate(
-                category.items!.length,
+                items.length,
                 (int index) => ExpandableMenuItem(
-                  item: category.items![index],
-                  isExpanded: category.items![index] == _expandedItem,
+                  item: items[index],
+                  isExpanded: items[index] == _expandedItem,
                   onTap: () {
                     setState(() {
-                      if (category.items![index] != _expandedItem) {
-                        _expandedItem = category.items![index];
+                      if (items[index] != _expandedItem) {
+                        _expandedItem = items[index];
                         return;
                       }
                       _expandedItem = null;

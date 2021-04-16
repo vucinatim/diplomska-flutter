@@ -23,7 +23,8 @@ Widget defaultWidgetBuilder(bool isFavorite, double size) {
 }
 
 /// Definitions
-typedef FavoriteButtonTapCallback = Future<bool> Function(bool isFavorite);
+typedef FavoriteButtonTapCallback = Future<bool> Function(
+    BuildContext context, bool isFavorite);
 
 ///build widget when isLike is changing
 typedef FavoriteWidgetBuilder = Widget? Function(bool isFavorite);

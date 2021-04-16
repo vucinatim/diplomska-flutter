@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:web_menu_flutter/src/models/item_category.dart';
 import 'package:web_menu_flutter/src/ui/widgets/custom_tab_indicator.dart';
 
 class CategoriesTabBar extends StatelessWidget implements PreferredSizeWidget {
@@ -12,13 +11,13 @@ class CategoriesTabBar extends StatelessWidget implements PreferredSizeWidget {
     this.tabController,
   }) : super(key: key);
 
-  final List<ItemCategory>? categories;
+  final List<String>? categories;
   final double? maxHeight;
   final double? heightFactor;
   final void Function(int)? onTabSelected;
   final TabController? tabController;
 
-  List<Widget> _buildTabItems(List<ItemCategory> categories) {
+  List<Widget> _buildTabItems(List<String> categories) {
     return List<Widget>.generate(
       categories.length,
       (int index) => Tab(
@@ -27,7 +26,7 @@ class CategoriesTabBar extends StatelessWidget implements PreferredSizeWidget {
           margin: const EdgeInsets.only(top: 2.5),
           alignment: Alignment.center,
           child: Text(
-            categories[index].title!['en']!.toUpperCase(),
+            categories[index].toUpperCase(),
             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
           ),
         ),

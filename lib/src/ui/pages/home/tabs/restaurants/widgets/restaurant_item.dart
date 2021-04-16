@@ -1,26 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:web_menu_flutter/src/app/routing/router.dart';
+import 'package:web_menu_flutter/src/blocs/profile_bloc/profile_bloc.dart';
 import 'package:web_menu_flutter/src/models/models.dart';
 import 'package:web_menu_flutter/src/ui/pages/restaurant/restaurant_menu_page.dart';
 import 'package:web_menu_flutter/src/ui/utils/ui_helpers.dart';
 import 'package:web_menu_flutter/src/app/extensions/hover_extensions.dart';
 import 'package:web_menu_flutter/src/ui/widgets/favorite_button/favorite_button.dart';
+import 'package:web_menu_flutter/src/ui/widgets/favorite_button/restaurant_favorite_button.dart';
 
 class RestaurantItem extends StatelessWidget {
-  const RestaurantItem({Key? key, this.restaurant}) : super(key: key);
+  const RestaurantItem({Key? key, required this.restaurant}) : super(key: key);
 
-  final Restaurant? restaurant;
-
-  Future<bool> onFavoriteButtonTapped(bool isFavorite) async {
-    /// send your request here
-    // final bool success= await sendRequest();
-
-    /// if failed, you can do nothing
-    // return success? !isFavorite:isFavorite;
-
-    return !isFavorite;
-  }
+  final Restaurant restaurant;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +22,7 @@ class RestaurantItem extends StatelessWidget {
         InkWell(
           onTap: () {
             Navigator.of(context).pushNamed(AppRouter.RestaurantRoute,
-                arguments: RestaurantArguments(restaurant!.id));
+                arguments: RestaurantArguments(restaurant.id));
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(
@@ -48,7 +41,7 @@ class RestaurantItem extends StatelessWidget {
                       child: FittedBox(
                         fit: BoxFit.cover,
                         clipBehavior: Clip.antiAlias,
-                        child: Image.network(restaurant!.imageUrl!),
+                        child: Image.network(restaurant.thumbnail!),
                       ),
                     ),
                     horizontalSpaceModerate,
@@ -57,14 +50,14 @@ class RestaurantItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            restaurant!.name!,
+                            restaurant.name!,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           verticalSpaceTiny,
                           Text(
-                            restaurant!.description!,
+                            restaurant.description!,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(fontSize: 11),
@@ -80,7 +73,7 @@ class RestaurantItem extends StatelessWidget {
                                 ),
                                 horizontalSpaceTiny,
                                 Text(
-                                  restaurant!.contactInfo!.city!,
+                                  restaurant.contactInfo!.city!,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(fontSize: 11),
                                 ),
@@ -90,11 +83,7 @@ class RestaurantItem extends StatelessWidget {
                         ],
                       ),
                     ),
-                    FavoriteButton(
-                      size: 20,
-                      padding: const EdgeInsets.fromLTRB(20, 8, 8, 8),
-                      onTap: onFavoriteButtonTapped,
-                    ),
+                    RestaurantFavoriteButton(restaurant: restaurant),
                   ],
                 ),
               ],

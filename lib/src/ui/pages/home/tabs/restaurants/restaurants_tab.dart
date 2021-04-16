@@ -83,9 +83,21 @@ class _RestaurantsTabState extends State<RestaurantsTab> {
                                   .toList(),
                             ),
                           )
-                        : const SliverFillRemaining(
+                        : SliverFillRemaining(
                             child: Center(
-                              child: Text('No Items'),
+                              child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        context
+                                            .read<RestaurantsBloc>()
+                                            .add(LoadRestaurants());
+                                      },
+                                      child: const Text('Reload'),
+                                    ),
+                                    const Text('No Items'),
+                                  ]),
                             ),
                           ),
               ],

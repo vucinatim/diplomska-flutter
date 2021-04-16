@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Location {
   double? lat;
   double? lng;
@@ -7,9 +9,13 @@ class Location {
     required this.lng,
   });
 
-  Location.fromJson(Map<String, dynamic> data) {
-    lat = data['latitude'] ?? 0;
-    lng = data['longitude'] ?? 0;
+  Location.fromGeoPoint(GeoPoint? data) {
+    if (data == null) {
+      return;
+    }
+
+    lat = data.latitude;
+    lng = data.longitude;
   }
 
   Map<String, dynamic> toJson() {
@@ -46,18 +52,6 @@ class ContactInfo {
     phone = data['phone'];
     postNumber = data['post_number'];
     website = data['website'];
-    location = Location.fromJson(data['location']);
-  }
-
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'address': address,
-      'city': city,
-      'email': email,
-      'phone': phone,
-      'post_number': postNumber,
-      'website': website,
-      'location': location?.toJson(),
-    };
+    location = Location.fromGeoPoint(data['location']);
   }
 }

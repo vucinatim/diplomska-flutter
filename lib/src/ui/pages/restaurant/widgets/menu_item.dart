@@ -28,25 +28,26 @@ class _ExpandableMenuItemState extends State<ExpandableMenuItem> {
   Widget _buildInfo() {
     return Expanded(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            widget.item!.title![widget.language]!,
+            widget.item?.name ?? noValueString,
             overflow: TextOverflow.ellipsis,
+            maxLines: widget.isExpanded ? 2 : 1,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
           verticalSpaceTiny,
           Text(
-            widget.item!.description![widget.language]!,
+            widget.item?.description ?? '',
             overflow: TextOverflow.ellipsis,
-            maxLines: 2,
+            maxLines: widget.isExpanded ? 3 : 2,
           ),
           verticalSpaceTiny,
           Text(
-            '${f.format(widget.item!.price).toString()} \€',
+            '${f.format(widget.item?.price).toString()} \€',
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: Theme.of(context).primaryColor,
@@ -68,7 +69,9 @@ class _ExpandableMenuItemState extends State<ExpandableMenuItem> {
       child: FittedBox(
         fit: BoxFit.cover,
         clipBehavior: Clip.antiAlias,
-        child: Image.network(widget.item!.imageUrl!),
+        child: widget.item?.image != null
+            ? Image.network(widget.item!.image!)
+            : const Icon(Icons.help_center),
       ),
     );
   }
@@ -81,7 +84,9 @@ class _ExpandableMenuItemState extends State<ExpandableMenuItem> {
             FittedBox(
               fit: BoxFit.cover,
               clipBehavior: Clip.antiAlias,
-              child: Image.network(widget.item!.imageUrl!),
+              child: widget.item?.image != null
+                  ? Image.network(widget.item!.image!)
+                  : const Icon(Icons.help_center),
             ),
             Positioned(
               top: 12,
@@ -122,10 +127,12 @@ class _ExpandableMenuItemState extends State<ExpandableMenuItem> {
               child: widget.isExpanded ? _buildHeader() : Container(),
             ),
             Container(
+              height: widget.isExpanded ? null : 95,
               padding: const EdgeInsets.symmetric(
                   horizontal: horizontalAppPadding, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   _buildInfo(),
                   AnimatedSwitcher(

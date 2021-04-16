@@ -48,7 +48,8 @@ class AppRouter {
         final RestaurantArguments args =
             settings.arguments as RestaurantArguments;
         return SimpleRoute(
-            page: RestaurantMenuPage(restaurantId: args.restaurantId),
+            page:
+                RestaurantMenuPageAlternative(restaurantId: args.restaurantId),
             routeName: settings.name);
       case RestaurantInfoRoute:
         return EnterExitRoute(

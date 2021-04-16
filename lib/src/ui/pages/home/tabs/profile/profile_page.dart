@@ -29,7 +29,7 @@ class ProfilePage extends StatelessWidget {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (BuildContext context, ProfileState state) {
         if (state is ProfileNotLoaded) {
-          BlocProvider.of<ProfileBloc>(context).add(LoadProfile());
+          // BlocProvider.of<ProfileBloc>(context).add(LoadProfile());
           return const Center(
             child: Text('Could not load your profile'),
           );
@@ -70,7 +70,7 @@ class ProfilePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Hello, ${state.profile.fullName?.split(' ').first}',
+                        'Hello, ${state.profile.user.name?.split(' ').first}',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 33,
@@ -99,7 +99,7 @@ class ProfilePage extends StatelessWidget {
                                 ),
                               ),
                               child: Text(
-                                getInitials(state.profile.fullName),
+                                getInitials(state.profile.user.name),
                                 style: const TextStyle(
                                     fontSize: 35, color: Colors.white),
                               ),
@@ -111,7 +111,7 @@ class ProfilePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  state.profile.fullName ?? noValueString,
+                                  state.profile.user.name ?? noValueString,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
@@ -119,7 +119,7 @@ class ProfilePage extends StatelessWidget {
                                 ),
                                 verticalSpaceSmall,
                                 Text(
-                                  state.profile.email ?? noValueString,
+                                  state.profile.user.email,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black54),
@@ -213,10 +213,10 @@ class ProfilePage extends StatelessWidget {
                     itemExtent:
                         screenWidth(context) / 2 - (horizontalAppPadding - 4),
                     scrollDirection: Axis.horizontal,
-                    itemCount: state.profile.favourites!.length,
+                    itemCount: state.profile.favorites.length,
                     itemBuilder: (BuildContext context, int index) {
                       return RestaurantCardSmall(
-                        restaurant: state.profile.favourites![index],
+                        restaurant: state.profile.favorites[index],
                       );
                     },
                   ),

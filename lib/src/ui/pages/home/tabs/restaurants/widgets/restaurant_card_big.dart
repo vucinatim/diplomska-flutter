@@ -40,7 +40,7 @@ class RestaurantCardBig extends StatelessWidget {
                   FittedBox(
                     fit: BoxFit.cover,
                     clipBehavior: Clip.antiAlias,
-                    child: Image.network(restaurant!.imageUrl!),
+                    child: Image.network(restaurant!.thumbnail!),
                   ),
                   Positioned(
                     top: 0,

@@ -8,26 +8,28 @@ import 'package:web_menu_flutter/src/models/models.dart';
 import 'package:web_menu_flutter/src/ui/pages/restaurant/widgets/restaurant_app_bar.dart';
 import 'package:web_menu_flutter/src/ui/pages/restaurant/widgets/restaurant_header.dart';
 import 'package:web_menu_flutter/src/ui/pages/restaurant/widgets/restaurant_menu.dart';
+import 'package:web_menu_flutter/src/app/extensions/num_extensions.dart';
 
 import 'widgets/categories_tab_bar.dart';
 
-class RestaurantArguments {
-  final String? restaurantId;
+// class RestaurantArguments {
+//   final String? restaurantId;
+//
+//   RestaurantArguments(this.restaurantId);
+// }
 
-  RestaurantArguments(this.restaurantId);
-}
-
-class RestaurantMenuPage extends StatefulWidget {
-  const RestaurantMenuPage({Key? key, this.restaurantId}) : super(key: key);
+class RestaurantMenuPageAlternative extends StatefulWidget {
+  const RestaurantMenuPageAlternative({Key? key, this.restaurantId})
+      : super(key: key);
 
   final String? restaurantId;
 
   @override
-  State<StatefulWidget> createState() => _RestaurantMenuPageState();
+  State<StatefulWidget> createState() => _RestaurantMenuAlternativePageState();
 }
 
-class _RestaurantMenuPageState extends State<RestaurantMenuPage>
-    with TickerProviderStateMixin {
+class _RestaurantMenuAlternativePageState
+    extends State<RestaurantMenuPageAlternative> with TickerProviderStateMixin {
   static const double _kExpandedHeight = 220.0;
   static const double _kTabBarHeight = 40.0;
   double _tabBarComeInOffset = 200; // re-calculated after first frame
@@ -36,6 +38,7 @@ class _RestaurantMenuPageState extends State<RestaurantMenuPage>
   final GlobalKey _endOfHeaderKey = GlobalKey(debugLabel: 'endOfHeaderKey');
   TabController? _tabController;
   List<GlobalKey> _tabKeys = <GlobalKey>[];
+  final List<double> _tabsBreakpoints = <double>[];
   bool _disableScrollListener = false;
 
   @override
@@ -46,35 +49,46 @@ class _RestaurantMenuPageState extends State<RestaurantMenuPage>
     }
 
     _scrollController.addListener(() {
-      if (!_disableScrollListener) {
-        if (_tabKeys.every((GlobalKey key) => key.currentContext != null)) {
-          final double offset = _scrollController.offset;
-          int? closestTabIndex;
-          double closestDistance = double.maxFinite;
-          for (int i = 0; i < _tabKeys.length; i++) {
-            final RenderObject object =
-                _tabKeys[i].currentContext!.findRenderObject()!;
-            final RenderAbstractViewport viewport =
-                RenderAbstractViewport.of(object)!;
-            final double target = viewport
-                .getOffsetToReveal(object, 0.0)
-                .offset
-                .clamp(_scrollController.position.minScrollExtent,
-                    _scrollController.position.maxScrollExtent);
-
-            final double distance = (offset - target).abs();
-            if (distance < closestDistance) {
-              closestTabIndex = i;
-              closestDistance = distance;
-            }
-          }
-
-          /// Animate to the closest computed tab if not already there
-          if (_tabController!.index != closestTabIndex) {
-            _tabController!.animateTo(closestTabIndex!);
+      if (_disableScrollListener) {
+        return;
+      }
+      for (int i = 0; i < _tabsBreakpoints.length; i++) {
+        final double start = i > 0 ? _tabsBreakpoints[i - 1] : 0;
+        final double end = _tabsBreakpoints[i];
+        if (_scrollController.offset.isBetween(start, end)) {
+          if (_tabController!.index != max(0, i - 1)) {
+            _tabController!.animateTo(max(0, i - 1));
           }
         }
       }
+
+      // if (_tabKeys.every((GlobalKey key) => key.currentContext != null)) {
+      //   final double offset = _scrollController.offset;
+      //   int? closestTabIndex;
+      //   double closestDistance = double.maxFinite;
+      //   for (int i = 0; i < _tabKeys.length; i++) {
+      //     final RenderObject object =
+      //         _tabKeys[i].currentContext!.findRenderObject()!;
+      //     final RenderAbstractViewport viewport =
+      //         RenderAbstractViewport.of(object)!;
+      //     final double target = viewport
+      //         .getOffsetToReveal(object, 0.0)
+      //         .offset
+      //         .clamp(_scrollController.position.minScrollExtent,
+      //             _scrollController.position.maxScrollExtent);
+      //
+      //     final double distance = (offset - target).abs();
+      //     if (distance < closestDistance) {
+      //       closestTabIndex = i;
+      //       closestDistance = distance;
+      //     }
+      //   }
+      //
+      //   /// Animate to the closest computed tab if not already there
+      //   if (_tabController!.index != closestTabIndex) {
+      //     _tabController!.animateTo(closestTabIndex!);
+      //   }
+      // }
       setState(() {});
     });
     super.initState();
@@ -104,6 +118,20 @@ class _RestaurantMenuPageState extends State<RestaurantMenuPage>
     });
   }
 
+  void computeTabsBreakpoints(List<ItemCategory>? categories) {
+    if (categories == null || categories.isEmpty) {
+      return;
+    }
+
+    double currentOffset = _tabBarComeInOffset + 110;
+    for (ItemCategory category in categories) {
+      _tabsBreakpoints.add(currentOffset);
+      currentOffset += category.items.length * 95 + 60;
+    }
+
+    print(_tabsBreakpoints);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,6 +143,8 @@ class _RestaurantMenuPageState extends State<RestaurantMenuPage>
                   length: state.restaurant.menu!.length, vsync: this);
               _tabKeys = List<GlobalKey>.generate(state.restaurant.menu!.length,
                   (int index) => GlobalKey(debugLabel: 'tabKey $index'));
+              print('NUM OF TABS: ${_tabKeys.length}');
+              computeTabsBreakpoints(state.restaurant.menu);
               computeTabBarComeInOffset();
             });
         },
@@ -161,13 +191,19 @@ class _RestaurantMenuPageState extends State<RestaurantMenuPage>
                                 _disableScrollListener = false;
                               });
                             }
-                            _scrollController.position.ensureVisible(
-                              _tabKeys[index]
-                                  .currentContext!
-                                  .findRenderObject()!,
-                              alignment: 0.0,
-                              duration: const Duration(milliseconds: 300),
+
+                            _scrollController.animateTo(
+                              _tabsBreakpoints[index],
+                              duration: const Duration(milliseconds: 200),
+                              curve: Curves.easeOut,
                             );
+                            // _scrollController.position.ensureVisible(
+                            //   _tabKeys[index]
+                            //       .currentContext!
+                            //       .findRenderObject()!,
+                            //   alignment: 0.0,
+                            //   duration: const Duration(milliseconds: 300),
+                            // );
                           },
                         )
                       : null,

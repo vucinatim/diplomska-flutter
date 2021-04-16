@@ -93,16 +93,17 @@ class RestaurantInfoPage extends StatelessWidget {
     );
   }
 
-  Widget buildOpeningHours(Map<String, String>? openingHours) {
-    const List<String> weekDays = <String>[
-      'monday',
-      'tuesday',
-      'wednesday',
-      'thursday',
-      'friday',
-      'saturday',
-      'sunday',
-    ];
+  Widget buildOpeningHours(
+      BuildContext context, Map<String, OpenHours>? openingHours) {
+    // const List<String> weekDays = <String>[
+    //   'monday',
+    //   'tuesday',
+    //   'wednesday',
+    //   'thursday',
+    //   'friday',
+    //   'saturday',
+    //   'sunday',
+    // ];
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: horizontalAppPadding),
@@ -128,15 +129,15 @@ class RestaurantInfoPage extends StatelessWidget {
                       ),
                       child: Column(
                         children: List<Widget>.generate(
-                          weekDays.length,
+                          openingHours.keys.length,
                           (int index) => Padding(
                             padding: const EdgeInsets.symmetric(vertical: 4),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                Text(weekDays[index]),
-                                Text(openingHours[weekDays[index]] ??
-                                    noValueString),
+                                Text(openingHours.keys.elementAt(index)),
+                                Text(
+                                    '${openingHours[openingHours.keys.elementAt(index)]!.toTimeString(context)}'),
                               ],
                             ),
                           ),
@@ -262,7 +263,7 @@ class RestaurantInfoPage extends StatelessWidget {
                             verticalSpace(35),
                             buildAddress(restaurant.contactInfo),
                             verticalSpace(35),
-                            buildOpeningHours(restaurant.openingHours),
+                            buildOpeningHours(context, restaurant.openingHours),
                             verticalSpace(35),
                             buildContactInfo(context, restaurant.contactInfo)
                           ],

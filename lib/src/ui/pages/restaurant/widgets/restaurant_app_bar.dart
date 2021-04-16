@@ -65,9 +65,11 @@ class RestaurantAppBar extends SliverPersistentHeaderDelegate {
         MenuSearchDelegate<ItemCategory>(
             items: restaurant?.menu ?? <ItemCategory>[],
             filter: (ItemCategory category, String query) {
-              if (category.items!
-                  .where((MenuItem item) => item.title!['en']!.contains(query))
-                  .isNotEmpty) return true;
+              if (category.items
+                  .where((MenuItem item) => (item.name ?? '').contains(query))
+                  .isNotEmpty) {
+                return true;
+              }
               return false;
             });
 
@@ -87,16 +89,14 @@ class RestaurantAppBar extends SliverPersistentHeaderDelegate {
             children: <Widget>[
               Opacity(
                 opacity: bgImageOpacity,
-                child: restaurant?.imageUrl != null
+                child: restaurant?.headerImg != null
                     ? Transform.scale(
                         scale: bgImageScale!,
                         alignment: Alignment.bottomCenter,
-                        child: restaurant?.imageUrl != null
-                            ? Image.network(
-                                restaurant!.imageUrl!,
-                                fit: BoxFit.cover,
-                              )
-                            : const Text('No Restaurant Image'),
+                        child: Image.network(
+                          restaurant!.headerImg!,
+                          fit: BoxFit.cover,
+                        ),
                       )
                     : Container(
                         color: Colors.grey,
@@ -128,6 +128,7 @@ class RestaurantAppBar extends SliverPersistentHeaderDelegate {
                   Navigator.of(context).pop();
                 },
               ),
+              horizontalSpaceTiny,
               Transform.translate(
                 offset: tittleOffset,
                 child: Padding(
@@ -214,12 +215,12 @@ class RestaurantAppBar extends SliverPersistentHeaderDelegate {
                                           verticalSpaceModerate,
                                           Column(
                                             children: List<Widget>.generate(
-                                              restaurant!
-                                                  .supportedLanguages!.length,
+                                              2,
                                               (int index) => ListTile(
-                                                title: Text(restaurant!
-                                                        .supportedLanguages![
-                                                    index]),
+                                                title: Text(<String>[
+                                                  'English',
+                                                  'Slovenian'
+                                                ].elementAt(index)),
                                                 trailing:
                                                     const Icon(Icons.check),
                                                 selected: true,
